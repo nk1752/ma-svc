@@ -21,26 +21,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
 
 // src/server.ts
 var import_body_parser = require("body-parser");
@@ -52,35 +32,27 @@ var import_cors = __toESM(require("cors"));
 var import_express = require("express");
 
 // src/service.ts
-function getStatus() {
-  return __async(this, null, function* () {
-    const report = {
-      id: 2,
-      name: "inaaya",
-      age: 16
-    };
-    return report;
-  });
+async function getStatus() {
+  const report = {
+    id: 2,
+    name: "inaaya",
+    age: 16
+  };
+  return report;
 }
-function getHello(name) {
-  return __async(this, null, function* () {
-    return { message: `hello ${name}` };
-  });
+async function getHello(name) {
+  return { message: `hello ${name}` };
 }
 
 // src/controller.ts
-function Status(req, res) {
-  return __async(this, null, function* () {
-    const report = yield getStatus();
-    return res.status(200).contentType("application/json").send(report);
-  });
+async function Status(req, res) {
+  const report = await getStatus();
+  return res.status(200).contentType("application/json").send(report);
 }
-function Hello(req, res) {
-  return __async(this, null, function* () {
-    const name = req.query.name;
-    const msg = yield getHello(name);
-    return res.status(200).contentType("application/json").send(msg);
-  });
+async function Hello(req, res) {
+  const name = req.query.name;
+  const msg = await getHello(name);
+  return res.status(200).contentType("application/json").send(msg);
 }
 
 // src/router.ts
